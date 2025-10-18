@@ -1,5 +1,290 @@
 ﻿# captcha_microservice
 
+#Follow the following commands to run the project in your local system after cloning:
+
+🧮 CAPTCHA Service — Spring Boot Microservice
+
+   A lightweight Spring Boot 3.x microservice that generates and validates mathematical CAPTCHAs (addition, subtraction, multiplication).
+   This project can be reused across applications to prevent automated bot submissions in login, signup, or form APIs.
+
+🚀 Features
+
+   ✅ RESTful API endpoints (/captcha/generate, /captcha/validate)
+   
+   ✅ Arithmetic CAPTCHAs with difficulty levels (L1, L2, L3)
+   
+   ✅ Optional image-based CAPTCHA (Base64 PNG)
+   
+   ✅ Unique captchaId for each generated challenge
+   
+   ✅ TTL-based expiry (configurable)
+   
+   ✅ Redis-backed storage with in-memory fallback
+   
+   ✅ Built with Spring Boot 3, Java 17
+   
+   ✅ Easily deployable as a standalone microservice
+
+
+🧰 Tech Stack
+
+   Component	Technology
+   Framework	Spring Boot 3.x
+   Language	Java 17
+   Build Tool	Maven
+   Data Store	Redis / In-Memory
+   Serialization	Jackson (JSON)
+   Validation	Jakarta Validation API
+   REST Testing	Postman / curl
+
+   
+📦 Folder Structure
+
+   captcha/
+   ├── pom.xml
+   ├── README.md
+   └── src
+       └── main
+           ├── java/com/example/captcha
+           │   ├── CaptchaServiceApplication.java
+           │   ├── controller/CaptchaController.java
+           │   ├── service/
+           │   │   ├── CaptchaService.java
+           │   │   ├── CaptchaGenerator.java
+           │   │   └── store/
+           │   │       ├── CaptchaStore.java
+           │   │       ├── RedisCaptchaStore.java
+           │   │       └── InMemoryCaptchaStore.java
+           │   ├── dto/ (request & response classes)
+           │   ├── model/CaptchaEntry.java
+           │   └── util/ImageUtil.java
+           └── resources/application.yml
+
+⚙️ Installation & Setup
+
+           1️⃣ Clone the repository
+           git clone https://github.com/<your-username>/captcha-service.git
+           cd captcha
+
+           2️⃣ Prerequisites
+           
+           Java 17 or higher installed
+           Verify:
+           java --version
+           
+           Maven installed
+           Verify:
+           mvn -v
+           
+           Redis if you want distributed caching (Optional)
+           Start Redis using Docker:
+           docker run --name captcha-redis -p 6379:6379 -d redis:7
+
+
+🧩 Build & Run
+
+     Run directly
+     mvn spring-boot:run
+
+     OR Build and run the jar
+    
+     mvn clean package -DskipTests
+     java -jar target/captcha-service-0.0.1-SNAPSHOT.jar
+
+
+ By default, the server runs on port 5000.
+
+
+🧠 API Endpoints
+
+    1️⃣ POST /captcha/generate
+    
+    Request:
+    
+    {
+      "asImage": true,
+      "difficulty": "L1"
+    }
+    
+    
+    Response:
+    
+    {
+      "captchaId": "b7a1a6f0-xxxx-xxxx-xxxx-xxxxxxxx",
+      "question": "5 + 3",
+      "imageBase64": "iVBORw0KGgoAAAANSUhEUgAA...",
+      "expiresIn": 180
+    }
+
+    2️⃣ POST /captcha/validate
+    
+    Request:
+    
+    {
+      "captchaId": "b7a1a6f0-xxxx-xxxx-xxxx-xxxxxxxx",
+      "answer": "8"
+    }
+    
+    
+    Response (Success):
+    
+    {
+      "success": true,
+      "message": "validated"
+    }
+    
+    
+    Response (Failure):
+    
+    {
+      "success": false,
+      "message": "incorrect"
+    }
+    
+    
+    Response (Expired):
+    
+    {
+      "success": false,
+      "message": "expired or not found"
+    }
+
+ 🧪 Testing with Postman
+
+    Generate CAPTCHA
+    
+    Method: POST
+    
+    URL: http://localhost:5000/captcha/generate
+    
+    Headers:
+    Content-Type: application/json
+    
+    Body:
+    
+    { "asImage": true, "difficulty": "L1" }
+    
+    
+    Copy captchaId and note the question (e.g., “3 + 5”).
+    
+    Validate CAPTCHA
+    
+    Method: POST
+    
+    URL: http://localhost:5000/captcha/validate
+    
+    Headers:
+    Content-Type: application/json
+    
+    Body:
+    
+    { "captchaId": "paste-here", "answer": "8" }
+
+
+  ✅ You should get { "success": true, "message": "validated" }
+
+
+⚙️ Configuration
+
+    File: src/main/resources/application.yml
+    
+    server:
+      port: 5000
+    
+    captcha:
+      ttl: 180   # in seconds
+    
+    redis:
+      host: localhost
+      port: 6379
+    
+    
+    You can modify:
+    
+    Port → under server.port
+    
+    Captcha TTL → under captcha.ttl
+    
+    Redis connection → under redis.host & redis.port
+
+
+ 🧾 Error Handling
+
+   Error Type	Cause	HTTP Code
+   
+   400	Wrong or expired captcha	400
+   
+   500	Server-side error / Redis failure	500
+   
+   Connection Refused	Service not running / wrong port	—
+
+   <br>
+   
+ 🧱 Troubleshooting
+ 
+      Problem	Solution
+      
+      Port 5000 busy	Change server.port in application.yml
+      
+      Redis not running	Start Redis or let it fallback to in-memory
+      
+      Build errors	Run mvn clean install -U to refresh dependencies
+      
+      Java version error	Ensure Java 17+ is set as default (java -version)
+
+<br>
+📈 Future Enhancements
+
+
+   Add distorted image CAPTCHAs (anti-OCR)
+   
+   Add audio CAPTCHAs for accessibility
+   
+   Add rate-limiting filter using Bucket4j
+   
+   Expose metrics via Spring Boot Actuator
+   
+   JWT-based stateless CAPTCHA tokens
+
+
+<br>
+👨‍💻 Contributing
+
+
+   Pull requests are WELCOME.
+   
+   Steps:
+   
+   Fork the repository
+   
+   Create your feature branch (git checkout -b feature-name)
+   
+   Commit changes (git commit -m 'Add feature')
+   
+   Push to branch (git push origin feature-name)
+   
+   Open a Pull Request
+   
+<br>
+📄 License
+
+This project is licensed under the MIT License — free to use, modify, and distribute with attribution.
+
+
+<br>
+🧩 Author
+
+
+Ajinkya Patil
+Created as part of an R&D on Java Spring Boot microservices.
+📧 patilajinkya148@gmail.com
+
+<br>
+<br>
+<br>
+
+ 
+
 The problem statement and guidelines and specifications I followed for this project are as follows:
 
  <b>Objectives:-</b>
@@ -128,3 +413,4 @@ The problem statement and guidelines and specifications I followed for this proj
  • Security: TLS enabled; logs redacted; network restricted; headers sanitized.
  
  • Monitoring: create dashboards for success/failure ratio and expiries.
+
