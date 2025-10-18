@@ -97,6 +97,11 @@
 
 🧠 API Endpoints
 
+### URL for POSTMAN Documentation :  <br>
+https://documenter.getpostman.com/view/28841961/2sB3QQJ86V
+
+<br>
+
     1️⃣ POST /captcha/generate
     
     Request:
@@ -413,4 +418,5 @@ The problem statement and guidelines and specifications I followed for this proj
  • Security: TLS enabled; logs redacted; network restricted; headers sanitized.
  
  • Monitoring: create dashboards for success/failure ratio and expiries.
+
 
