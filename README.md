@@ -41,24 +41,42 @@
 📦 Folder Structure
 
    captcha/
-   ├── pom.xml
-   ├── README.md
-   └── src
-       └── main
-           ├── java/com/example/captcha
-           │   ├── CaptchaServiceApplication.java
-           │   ├── controller/CaptchaController.java
-           │   ├── service/
-           │   │   ├── CaptchaService.java
-           │   │   ├── CaptchaGenerator.java
-           │   │   └── store/
-           │   │       ├── CaptchaStore.java
-           │   │       ├── RedisCaptchaStore.java
-           │   │       └── InMemoryCaptchaStore.java
-           │   ├── dto/ (request & response classes)
-           │   ├── model/CaptchaEntry.java
-           │   └── util/ImageUtil.java
-           └── resources/application.yml
+   
+      ├── pom.xml
+      
+      ├── README.md
+      
+      └── src
+      
+          └── main
+       
+              ├── java/com/example/captcha
+              
+              │   ├── CaptchaServiceApplication.java
+              
+              │   ├── controller/CaptchaController.java
+   
+              │   ├── service/
+              
+              │   │   ├── CaptchaService.java
+              
+              │   │   ├── CaptchaGenerator.java
+              
+              │   │   └── store/
+              
+              │   │       ├── CaptchaStore.java
+              
+              │   │       ├── RedisCaptchaStore.java
+              
+              │   │       └── InMemoryCaptchaStore.java
+              
+              │   ├── dto/ (request & response classes)
+              
+              │   ├── model/CaptchaEntry.java
+              
+              │   └── util/ImageUtil.java
+              
+              └── resources/application.yml
 
 ⚙️ Installation & Setup
 
@@ -418,5 +436,6 @@ The problem statement and guidelines and specifications I followed for this proj
  • Security: TLS enabled; logs redacted; network restricted; headers sanitized.
  
  • Monitoring: create dashboards for success/failure ratio and expiries.
+
 
 
